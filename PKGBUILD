@@ -6,7 +6,7 @@ targets=(
   "ubuntu"
 )
 pkgname="envoyproxy"
-pkgver="1.16.2"
+pkgver="1.18.2"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 pkgdesclong=(
@@ -20,10 +20,10 @@ section="utils"
 provides=("getenvoy-envoy")
 conflicts=("getenvoy-envoy")
 sources=(
-  "https://dl.bintray.com/tetrate/getenvoy-deb/pool/stable/g/getenvoy-envoy/getenvoy-envoy_1.16.2.p0.ge98e41a-1p71.gbe6132a_amd64.deb"
+  "https://dl.bintray.com/tetrate/getenvoy-deb/pool/stable/g/getenvoy-envoy/getenvoy-envoy_1.18.2.p0.gd362e79-1p75.g76c310e_amd64.deb"
 )
 hashsums=(
-  "daa48db48801aba772aaf61b09de943019b00347fc7f905889398f4688c5d84975e6f83cb39114f84307c67dabfadc31c8f71f00aaf76eba5529bcfbcf58d2bc"
+  "8dcfbc4d74655a8de40c266e3d803ddb238028dc96ad7168d03512107ae46d58"
 )
 
 package() {
