@@ -1,0 +1,11 @@
+{
+    "name": "envoy",
+    "description": "Amazing project description",
+    "build_dir": "/tmp/",
+    "output": "artifacts",
+    "Projects": [
+        {
+            "name": "envoyproxy"
+        }
+    ]
+}
