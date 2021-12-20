@@ -19,10 +19,10 @@ pipeline {
         }
         stage('Build') {
             parallel {
-                stage('Ubuntu 16.04') {
+                stage('Ubuntu 18.04') {
                     agent {
                         node {
-                            label 'pacur-agent-ubuntu-16.04-v1'
+                            label 'pacur-agent-ubuntu-18.04-v1'
                         }
                     }
                     steps {
@@ -36,10 +36,10 @@ pipeline {
                         }
                     }
                 }
-                stage('Centos 7') {
+                stage('Centos 8') {
                     agent {
                         node {
-                            label 'pacur-agent-centos-7-v1'
+                            label 'pacur-agent-centos-8-v1'
                         }
                     }
                     steps {
@@ -74,7 +74,7 @@ pipeline {
 
                     //since artifactory doesn't support a build with multiple repository involved
                     //we artificially create 3 different artifactory builds by changing the build
-                    //name with "-ubuntu" "-centos7" "-centos8"
+                    //name with "-ubuntu" "-centos8"
 
                     //ubuntu
                     buildInfo = Artifactory.newBuildInfo()
@@ -84,7 +84,7 @@ pipeline {
 								    {
 										"pattern": "artifacts/envoyproxy*.deb",
 										"target": "ubuntu-rc/pool/",
-										"props": "deb.distribution=xenial;deb.distribution=bionic;deb.distribution=focal;deb.component=main;deb.architecture=amd64"
+										"props": "deb.distribution=bionic;deb.distribution=focal;deb.component=main;deb.architecture=amd64"
 									}
 								]
 							}"""
@@ -101,33 +101,6 @@ pipeline {
                             'failFast'           : true
                     ]
                     Artifactory.addInteractivePromotion server: server, promotionConfig: config, displayName: "Ubuntu Promotion to Release"
-                    server.publishBuildInfo buildInfo
-
-                    //centos7
-                    buildInfo = Artifactory.newBuildInfo()
-                    buildInfo.name += "-centos7"
-                    uploadSpec= """{
-								"files": [
-                                    {
-                                        "pattern": "artifacts/(envoyproxy)-(*).rpm",
-                                        "target": "centos7-rc/zextras/{1}/{1}-{2}.rpm",
-                                        "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                                    }
-								]
-							}"""
-                    server.upload spec: uploadSpec, buildInfo: buildInfo, failNoOp: false
-                    config = [
-                            'buildName'          : buildInfo.name,
-                            'buildNumber'        : buildInfo.number,
-                            'sourceRepo'         : 'centos7-rc',
-                            'targetRepo'         : 'centos7-release',
-                            'comment'            : 'Do not change anything! just press the button',
-                            'status'             : 'Released',
-                            'includeDependencies': false,
-                            'copy'               : true,
-                            'failFast'           : true
-                    ]
-                    Artifactory.addInteractivePromotion server: server, promotionConfig: config, displayName: "Centos7 Promotion to Release"
                     server.publishBuildInfo buildInfo
 
                     //centos8

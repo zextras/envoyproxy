@@ -1,12 +1,13 @@
-## to run the project inside the container:
-#  pacur build <target>
+# Please refer to the table below to check envoy and consul
+# compatibility:
+#   - https://www.consul.io/docs/connect/proxies/envoy
 
 targets=(
   "centos"
   "ubuntu"
 )
 pkgname="envoyproxy"
-pkgver="1.18.2"
+pkgver="1.18.4"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 pkgdesclong=(
@@ -20,17 +21,15 @@ section="utils"
 provides=("getenvoy-envoy")
 conflicts=("getenvoy-envoy")
 sources=(
-  "https://dl.bintray.com/tetrate/getenvoy-deb/pool/stable/g/getenvoy-envoy/getenvoy-envoy_1.18.2.p0.gd362e79-1p75.g76c310e_amd64.deb"
+  "https://archive.tetratelabs.io/envoy/download/v${pkgver}/envoy-v${pkgver}-linux-amd64.tar.xz"
 )
 hashsums=(
-  "8dcfbc4d74655a8de40c266e3d803ddb238028dc96ad7168d03512107ae46d58"
+  "844cbab986a7db11749105bed282c0c6787fde7f0ad28ac9171ed7406137db56"
 )
 
 package() {
-  cd "${srcdir}"
-  ar x getenvoy-envoy_*.deb
-  tar -xvf "${srcdir}/data.tar.xz" -C "${pkgdir}"
-  tar -xvf "${srcdir}/control.tar.gz" -C "${pkgdir}"
-  rm -r "${pkgdir}/usr/share"
-  rm -r "${pkgdir}/control"
+  cd "${srcdir}/envoy-v${pkgver}-linux-amd64"
+  install -d "${pkgdir}/usr/bin"
+  install -m755 bin/envoy \
+    "${pkgdir}/usr/bin/envoy"
 }
