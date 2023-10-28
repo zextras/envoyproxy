@@ -1,7 +1,7 @@
 {
     "name": "envoy",
     "description": "Amazing project description",
-    "build_dir": "/tmp/",
+    "buildDir": "/tmp/",
     "output": "artifacts",
     "Projects": [
         {

@@ -8,4 +8,4 @@ After previous attempts on Envoy source compiling, this is the most efficient wa
 
 Envoy buildin process is so tedious and power consuming. You have been warned
 
-Here we use the official binaries (have a look at PKGBUILD `sources` field)
+Here we use the official binaries (have a look at PKGBUILD `source` field)
