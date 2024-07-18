@@ -3,7 +3,7 @@
 #   - https://www.consul.io/docs/connect/proxies/envoy
 
 pkgname="envoyproxy"
-pkgver="1.18.6"
+pkgver="1.29.7"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -16,13 +16,38 @@ conflicts=("getenvoy-envoy")
 source=(
   "https://archive.tetratelabs.io/envoy/download/v${pkgver}/envoy-v${pkgver}-linux-amd64.tar.xz"
 )
-sha256sums=(
-  "ce3cef786c8e89dd01dff506302b39cdf7ffca22a2e70b49b650c8529172d732"
+makedepends__rocky_8=(
+  'gcc-toolset-10-gcc'
+  'gcc-toolset-10-gcc-c++'
+  "git"
+  'python39'
+)
+source__rocky_8=(
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64"
+  "envoy-${pkgver}::git+https://github.com/envoyproxy/envoy#tag=v${pkgver}"
+)
+sha256sums=('36506721151dacb0b3950ea2d400b38ab8e1767741aeaa8651f7021d4225af89')
+sha256sums__rocky_8=(
+  'SKIP'
+  'SKIP'
 )
 
 package() {
   cd "${srcdir}/envoy-v${pkgver}-linux-amd64"
-  install -d "${pkgdir}/usr/bin"
-  install -m755 bin/envoy \
+  install -Dm755 bin/envoy \
     "${pkgdir}/usr/bin/envoy"
+}
+
+build__rocky_8() {
+  cd "${srcdir}/envoy-${pkgver}"
+  chmod +x ../bazelisk-linux-amd64
+  source /opt/rh/gcc-toolset-10/enable
+  ../bazelisk-linux-amd64 build envoy
+}
+
+package__rocky_8() {
+  cd "${srcdir}/envoy-${pkgver}"
+  install -Dm755 bazel-bin/source/exe/envoy-static \
+    "${pkgdir}/usr/bin/envoy"
+  strip "${pkgdir}/usr/bin/envoy"
 }
