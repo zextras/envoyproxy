@@ -20,10 +20,10 @@ makedepends__rocky_8=(
   'gcc-toolset-10-gcc'
   'gcc-toolset-10-gcc-c++'
   "git"
-  'python39'
+  'python312'
 )
 source__rocky_8=(
-  "https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64"
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-amd64"
   "envoy-${pkgver}::git+https://github.com/envoyproxy/envoy#tag=v${pkgver}"
 )
 sha256sums=('b821d0b0804d24c01f117858f09ab2f74819bdff16528e1c7ced835148432271')
