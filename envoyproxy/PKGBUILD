@@ -3,7 +3,7 @@
 #   - https://www.consul.io/docs/connect/proxies/envoy
 
 pkgname="envoyproxy"
-pkgver="1.34.4"
+pkgver="1.31.8"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -26,7 +26,9 @@ source__rocky_8=(
   "https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-amd64"
   "envoy-${pkgver}::git+https://github.com/envoyproxy/envoy#tag=v${pkgver}"
 )
-sha256sums=('b821d0b0804d24c01f117858f09ab2f74819bdff16528e1c7ced835148432271')
+sha256sums=(
+  '251f6843ee864d640d57066be441789588169fd10b8600a7497258a25edf2ff4'
+)
 sha256sums__rocky_8=(
   'SKIP'
   'SKIP'
