@@ -17,8 +17,8 @@ source=(
   "https://archive.tetratelabs.io/envoy/download/v${pkgver}/envoy-v${pkgver}-linux-amd64.tar.xz"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-12-gcc'
-  'gcc-toolset-12-gcc-c++'
+  'gcc-toolset-11-gcc'
+  'gcc-toolset-11-gcc-c++'
   "git"
   'python312'
 )
@@ -41,7 +41,7 @@ package() {
 build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-12/enable
+  source /opt/rh/gcc-toolset-11/enable
   ../bazelisk-linux-amd64 build envoy
 }
 
