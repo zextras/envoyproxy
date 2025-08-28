@@ -1,0 +1,15 @@
+{
+  "name": "yap-rocky-9",
+  "image": "m0rf30/yap-rocky-9:1.44",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python"
+      ]
+    }
+  }
+}
