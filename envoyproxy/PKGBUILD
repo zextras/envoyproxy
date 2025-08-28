@@ -3,7 +3,7 @@
 #   - https://www.consul.io/docs/connect/proxies/envoy
 
 pkgname="envoyproxy"
-pkgver="1.32.10"
+pkgver="1.33.7"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -17,8 +17,8 @@ source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-10-gcc'
-  'gcc-toolset-10-gcc-c++'
+  'gcc-toolset-11-gcc'
+  'gcc-toolset-11-gcc-c++'
   "git"
   'python39'
 )
@@ -43,7 +43,7 @@ build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
   python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-10/enable
+  source /opt/rh/gcc-toolset-11/enable
   ../bazelisk-linux-amd64 build envoy
 }
 
