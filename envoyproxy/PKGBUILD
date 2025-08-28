@@ -35,8 +35,7 @@ sha256sums__rocky_8=(
 )
 
 package() {
-  cd "${srcdir}/envoy-v${pkgver}-linux-amd64"
-  install -Dm755 bin/envoy \
+  install -Dm755 ${srcdir}/envoy-contrib-${pkgver}-linux-x86_64 \
     "${pkgdir}/usr/bin/envoy"
 }
 
