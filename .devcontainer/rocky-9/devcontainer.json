@@ -11,5 +11,6 @@
         "ms-python.python"
       ]
     }
-  }
+  },
+  "runArgs": ["--dns", "1.1.1.1", "--dns", "8.8.8.8"]
 }
