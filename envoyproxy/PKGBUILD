@@ -17,8 +17,8 @@ source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-11-gcc'
-  'gcc-toolset-11-gcc-c++'
+  'gcc-toolset-12-gcc'
+  'gcc-toolset-12-gcc-c++'
   "git"
   'python39'
 )
@@ -43,7 +43,7 @@ build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
   python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-11/enable
+  source /opt/rh/gcc-toolset-12/enable
   ../bazelisk-linux-amd64 build envoy
 }
 
