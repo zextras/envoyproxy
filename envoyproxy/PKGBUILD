@@ -26,7 +26,9 @@ source__rocky_8=(
   "https://github.com/bazelbuild/bazelisk/releases/download/v1.24.0/bazelisk-linux-amd64"
   "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
-sha256sums=('6e9b76a82b73acd17493fd89eff7eec28fd7741713ee82b9bb4ee05fa1982a02')
+sha256sums=(
+  'SKIP'
+)
 sha256sums__rocky_8=(
   'SKIP'
   'SKIP'
