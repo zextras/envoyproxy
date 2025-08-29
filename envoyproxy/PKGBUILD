@@ -23,7 +23,7 @@ makedepends__rocky_8=(
   'python39'
 )
 source__rocky_8=(
-  "https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64"
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.27.0/bazelisk-linux-amd64"
   "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
 sha256sums=(
@@ -41,10 +41,19 @@ package() {
 
 build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
+
+  {
+    echo "build --cxxopt=-std=c++20"
+    echo "build --host_cxxopt=-std=c++20"
+    echo "build --action_env=BAZEL_CXXOPTS=-std=c++20"
+  } >> .bazelrc
+
+
   python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
   source /opt/rh/gcc-toolset-12/enable
   ../bazelisk-linux-amd64 build envoy \
+    --action_env=BAZEL_CXXOPTS=-std=c++20 \
     --cxxopt='-std=c++20' \
     --host_cxxopt='-std=c++20'
 }
