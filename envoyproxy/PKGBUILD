@@ -48,13 +48,6 @@ build__rocky_8() {
     echo "build --cxxopt=-std=c++20"
     echo "build --host_cxxopt=-std=c++20"
     echo "build --action_env=BAZEL_CXXOPTS=-std=c++20"
-    echo "build --action_env=CC=/opt/rh/gcc-toolset-11/root/usr/bin/gcc"
-    echo "build --action_env=CXX=/opt/rh/gcc-toolset-11/root/usr/bin/g++"
-    echo "build --action_env=AR=/opt/rh/gcc-toolset-11/root/usr/bin/ar"
-    echo "build --action_env=LD=/opt/rh/gcc-toolset-11/root/usr/bin/ld"
-    echo "build --action_env=STRIP=/opt/rh/gcc-toolset-11/root/usr/bin/strip"
-    echo "build --action_env=PATH=/opt/rh/gcc-toolset-11/root/usr/bin:\$PATH"
-    echo "build --linkopt=-fuse-ld=ld"
   } >> .bazelrc
 
 
@@ -63,17 +56,9 @@ build__rocky_8() {
   source /opt/rh/gcc-toolset-11/enable
   ../bazelisk-linux-amd64 build envoy \
     --action_env=BAZEL_CXXOPTS=-std=c++20 \
-    --action_env=CC=/opt/rh/gcc-toolset-11/root/usr/bin/gcc \
-    --action_env=CXX=/opt/rh/gcc-toolset-11/root/usr/bin/g++ \
-    --action_env=AR=/opt/rh/gcc-toolset-11/root/usr/bin/ar \
-    --action_env=LD=/opt/rh/gcc-toolset-11/root/usr/bin/ld \
-    --action_env=STRIP=/opt/rh/gcc-toolset-11/root/usr/bin/strip \
-    --action_env=PATH="/opt/rh/gcc-toolset-11/root/usr/bin:$PATH" \
     --cxxopt='-std=c++20' \
     --host_cxxopt='-std=c++20' \
-    --linkopt='-fuse-ld=lld' \
-    --verbose_failures \
-    --sandbox_debug
+    --verbose_failures
 }
 
 package__rocky_8() {
