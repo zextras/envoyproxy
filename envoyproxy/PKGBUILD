@@ -71,7 +71,7 @@ build__rocky_8() {
     --action_env=PATH="/opt/rh/gcc-toolset-11/root/usr/bin:$PATH" \
     --cxxopt='-std=c++20' \
     --host_cxxopt='-std=c++20' \
-    --linkopt='-fuse-ld=ld' \
+    --linkopt='-fuse-ld=lld' \
     --verbose_failures \
     --sandbox_debug
 }
