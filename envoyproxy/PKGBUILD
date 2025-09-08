@@ -23,7 +23,7 @@ makedepends__rocky_8=(
   'python39'
 )
 source__rocky_8=(
-  "https://github.com/bazelbuild/bazelisk/releases/download/v1.25.0/bazelisk-linux-amd64"
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64"
   "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
 sha256sums=(
