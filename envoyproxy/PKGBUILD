@@ -54,7 +54,6 @@ build__rocky_8() {
     echo "build --action_env=LD=/opt/rh/gcc-toolset-11/root/usr/bin/ld"
     echo "build --action_env=STRIP=/opt/rh/gcc-toolset-11/root/usr/bin/strip"
     echo "build --action_env=PATH=/opt/rh/gcc-toolset-11/root/usr/bin:\$PATH"
-    echo "build --copt=-fno-integrated-as"
     echo "build --linkopt=-fuse-ld=ld"
   } >> .bazelrc
 
@@ -72,7 +71,6 @@ build__rocky_8() {
     --action_env=PATH="/opt/rh/gcc-toolset-11/root/usr/bin:$PATH" \
     --cxxopt='-std=c++20' \
     --host_cxxopt='-std=c++20' \
-    --copt='-fno-integrated-as' \
     --linkopt='-fuse-ld=ld' \
     --verbose_failures \
     --sandbox_debug
