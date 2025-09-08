@@ -59,7 +59,7 @@ pipeline {
                         container('yap') {
                             unstash 'project'
                             script {
-                                sh 'sudo dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39'
+                                sh 'sudo dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ gcc-toolset-11-binutils gcc-toolset-11-binutils-devel git python39'
                                 sh 'sudo useradd -m worker '
                                 if (BRANCH_NAME == 'devel') {
                                     def timestamp = new Date().format('yyyyMMddHHmmss')
