@@ -59,9 +59,17 @@ pipeline {
                         container('yap') {
                             unstash 'project'
                             script {
-                                sh 'sudo dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ gcc-toolset-11-binutils gcc-toolset-11-binutils-devel git python39'
-                                sh 'sudo useradd -m worker '
-                                if (BRANCH_NAME == 'devel') {
+                                sh '''
+                                    sudo dnf install -y \
+                                        gcc-toolset-13 \
+                                        gcc-toolset-13-gcc-c++ \
+                                        gcc-toolset-13-binutils \
+                                        binutils-devel \
+                                        libstdc++-devel \
+                                        git\
+                                        python312
+                                    sudo useradd -m worker
+                                    '''                                if (BRANCH_NAME == 'devel') {
                                     def timestamp = new Date().format('yyyyMMddHHmmss')
                                     sh "sudo -u worker yap build rocky-8 . -r ${timestamp} -d"
                                 } else {

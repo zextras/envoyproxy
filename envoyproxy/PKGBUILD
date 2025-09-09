@@ -17,12 +17,13 @@ source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-11-gcc'
-  'gcc-toolset-11-gcc-c++'
-  'gcc-toolset-11-binutils'
-  'gcc-toolset-11-binutils-devel'
-  "git"
-  'python39'
+  'gcc-toolset-13-gcc'
+  'gcc-toolset-13-binutils'
+  'gcc-toolset-13-binutils-devel'
+  'binutils-devel'
+  'libstdc++-devel'
+  'git'
+  'python312'
 )
 source__rocky_8=(
   "https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64"
