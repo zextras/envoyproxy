@@ -60,6 +60,14 @@ build__rocky_8() {
     --config=gcc \
     --cxxopt='-std=c++20' \
     --host_cxxopt='-std=c++20' \
+    --copt="-fno-section-anchors" \
+    --copt="-Wno-error=dangling-pointer" \
+    --copt="-Wno-dangling-pointer" \
+    --host_copt="-Wno-error=dangling-pointer" \
+    --host_copt="-Wno-dangling-pointer" \
+    --host_copt="-Wno-error" \
+    --copt="-fno-limit-debug-info" \
+    --linkopt="-Wl,--no-as-needed" \
     --verbose_failures
 }
 
