@@ -54,7 +54,7 @@ build__rocky_8() {
 
   python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-11/enable
+  source /opt/rh/gcc-toolset-13/enable
   ../bazelisk-linux-amd64 build envoy \
     --action_env=BAZEL_CXXOPTS=-std=c++20 \
     --cxxopt='-std=c++20' \
