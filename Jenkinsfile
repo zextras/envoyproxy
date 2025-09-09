@@ -61,9 +61,9 @@ pipeline {
                             script {
                                 sh '''
                                     sudo dnf install -y \
-                                        gcc-toolset-12 \
-                                        gcc-toolset-12-gcc-c++ \
-                                        gcc-toolset-12-binutils \
+                                        gcc-toolset-13 \
+                                        gcc-toolset-13-gcc-c++ \
+                                        gcc-toolset-13-binutils \
                                         glibc-devel \
                                         glibc-static \
                                         libstdc++-static \
