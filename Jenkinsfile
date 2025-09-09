@@ -69,7 +69,9 @@ pipeline {
                                         git\
                                         python312
                                     sudo useradd -m worker
-                                    '''                                if (BRANCH_NAME == 'devel') {
+                                    '''                                
+
+                                if (BRANCH_NAME == 'devel') {
                                     def timestamp = new Date().format('yyyyMMddHHmmss')
                                     sh "sudo -u worker yap build rocky-8 . -r ${timestamp} -d"
                                 } else {
