@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-packages-build-library@1.0.2',
+    identifier: 'jenkins-packages-build-library@1.0.4',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'git@github.com:zextras/jenkins-packages-build-library.git',
@@ -49,12 +49,10 @@ pipeline {
                     ubuntuSinglePkg: true,
                     overrides: [
                         'rocky-8': [
-                            'buildUser': 'worker',
-                            'buildFlags': ' -d ',
-                            'preBuildScript': '''
-                                dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39
-                                useradd -m worker
-                            ''',
+                            buildUser: 'worker',
+                            buildUserCreate: true,
+                            buildFlags: '-d',
+                            preBuildScript: 'dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
                         ]
                     ]
                 )
@@ -65,7 +63,7 @@ pipeline {
         {
             steps {
                 uploadStage(
-                    packages: yapHelper.getPackageNamesFromFiles(),
+                    packages: yapHelper.getPackageNames(),
                     ubuntuSinglePkg: true,
                 )
             }
