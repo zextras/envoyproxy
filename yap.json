@@ -3,7 +3,7 @@
     "description": "Amazing project description",
     "buildDir": "/tmp/",
     "output": "artifacts",
-    "Projects": [
+    "projects": [
         {
             "name": "envoyproxy"
         }
