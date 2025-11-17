@@ -1,0 +1,16 @@
+{
+  "name": "yap-ubuntu-focal",
+  "image": "m0rf30/yap-ubuntu-focal:1.44",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python"
+      ]
+    }
+  },
+  "runArgs": ["--dns", "1.1.1.1", "--dns", "8.8.8.8"]
+}

@@ -3,7 +3,7 @@
 #   - https://www.consul.io/docs/connect/proxies/envoy
 
 pkgname="envoyproxy"
-pkgver="1.29.12"
+pkgver="1.32.10"
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -14,34 +14,36 @@ section="utils"
 provides=("getenvoy-envoy")
 conflicts=("getenvoy-envoy")
 source=(
-  "https://archive.tetratelabs.io/envoy/download/v${pkgver}/envoy-v${pkgver}-linux-amd64.tar.xz"
+  "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-10-gcc'
-  'gcc-toolset-10-gcc-c++'
+  'gcc-toolset-11-gcc'
+  'gcc-toolset-11-gcc-c++'
   "git"
   'python39'
 )
 source__rocky_8=(
-  "https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64"
-  "envoy-${pkgver}::git+https://github.com/envoyproxy/envoy#tag=v${pkgver}"
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.24.0/bazelisk-linux-amd64"
+  "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
-sha256sums=('6e9b76a82b73acd17493fd89eff7eec28fd7741713ee82b9bb4ee05fa1982a02')
+sha256sums=(
+  'c2cce1c3fedeeab3e6cdc77aa2b89a5281d332abe299ddb71aeb29b6fc545f47'
+)
 sha256sums__rocky_8=(
-  'SKIP'
-  'SKIP'
+  'c50d662dcec8832eca56be673f5f9eef31d66a82d47762f46c7a7cd63edfa314'
+  '0338e6f2bb79f5efc84794b664b2218285f1e902fb640902ad676b22f1e1691b'
 )
 
 package() {
-  cd "${srcdir}/envoy-v${pkgver}-linux-amd64"
-  install -Dm755 bin/envoy \
+  install -Dm755 ${srcdir}/envoy-contrib-${pkgver}-linux-x86_64 \
     "${pkgdir}/usr/bin/envoy"
 }
 
 build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
+  python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-10/enable
+  source /opt/rh/gcc-toolset-11/enable
   ../bazelisk-linux-amd64 build envoy
 }
 
