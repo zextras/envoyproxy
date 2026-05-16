@@ -11,14 +11,17 @@ pkgver="1.32.10" # renovate: datasource=github-releases depName=envoyproxy/envoy
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 url="https://www.zextras.com"
 license=("Apache-2.0")
 section="utils"
 provides=("getenvoy-envoy")
 conflicts=("getenvoy-envoy")
-source=(
+source_x86_64=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
+)
+source_aarch64=(
+  "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-aarch_64"
 )
 makedepends__rocky_8=(
   'gcc-toolset-11-gcc'
@@ -33,14 +36,22 @@ source__rocky_8=(
 sha256sums=(
   'c2cce1c3fedeeab3e6cdc77aa2b89a5281d332abe299ddb71aeb29b6fc545f47'
 )
+sha256sums_aarch64=(
+  'f2cf4871de9350970668e8130665c50b5b0f7bced333463c13d685ce2276e8d6'
+)
 sha256sums__rocky_8=(
   'c50d662dcec8832eca56be673f5f9eef31d66a82d47762f46c7a7cd63edfa314'
   '0338e6f2bb79f5efc84794b664b2218285f1e902fb640902ad676b22f1e1691b'
 )
 
 package() {
-  install -Dm755 ${srcdir}/envoy-contrib-${pkgver}-linux-x86_64 \
-    "${pkgdir}/usr/bin/envoy"
+  if [ "${CARCH}" = "x86_64" ]; then
+    install -Dm755 "${srcdir}/envoy-contrib-${pkgver}-linux-x86_64" \
+      "${pkgdir}/usr/bin/envoy"
+  elif [ "${CARCH}" = "aarch64" ]; then
+    install -Dm755 "${srcdir}/envoy-contrib-${pkgver}-linux-aarch_64" \
+      "${pkgdir}/usr/bin/envoy"
+  fi
 }
 
 build__rocky_8() {

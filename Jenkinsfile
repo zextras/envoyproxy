@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-    identifier: 'jenkins-lib-common@1.7.5',
+    identifier: 'jenkins-lib-common@v2.5.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -51,6 +51,11 @@ pipeline {
                             preBuildScript: 'dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
                         ]
                     ]
+                )
+                buildStage(
+                    architecture: 'aarch64',
+                    distros: ['ubuntu-jammy'],
+                    parallelBuilds: false,
                 )
             }
         }
