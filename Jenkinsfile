@@ -22,6 +22,7 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
+        disableConcurrentBuilds()
         parallelsAlwaysFailFast()
         skipDefaultCheckout()
         timeout(time: 6, unit: 'HOURS')
