@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021-2025 Zextras <https://www.zextras.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
 library(
     identifier: 'jenkins-lib-common@v4.11.0',
     retriever: modernSCM([
@@ -30,6 +34,12 @@ pipeline {
                 script {
                     gitMetadata()
                 }
+            }
+        }
+
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
             }
         }
 
