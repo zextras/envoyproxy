@@ -33,6 +33,12 @@ pipeline {
             }
         }
 
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building deb/rpm packages'
