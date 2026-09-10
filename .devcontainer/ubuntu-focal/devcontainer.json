@@ -1,6 +1,6 @@
 {
   "name": "yap-ubuntu-focal",
-  "image": "m0rf30/yap-ubuntu-focal:1.44",
+  "image": "m0rf30/yap-ubuntu-focal:1.55",
   "customizations": {
     "vscode": {
       "settings": {
