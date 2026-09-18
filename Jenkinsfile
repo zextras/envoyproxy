@@ -43,12 +43,12 @@ pipeline {
                 buildStage(
                     buildFlags: '',
                     ubuntuSinglePkg: true,
+                    preBuildScriptSudo: false,
                     overrides: [
                         'rocky-8': [
-                            buildUser: 'worker',
-                            buildUserCreate: true,
-                            buildFlags: '-d',
-                            preBuildScript: 'dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
+                            buildUser: 'yap',
+                            buildFlags: '-d -s',
+                            preBuildScript: 'sudo dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
                         ]
                     ]
                 )
