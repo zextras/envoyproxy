@@ -37,6 +37,12 @@ pipeline {
             }
         }
 
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building deb/rpm packages'
@@ -66,6 +72,12 @@ pipeline {
                 uploadStage(
                     ubuntuSinglePkg: true,
                 )
+            }
+        }
+
+        stage('Semantic Release') {
+            steps {
+                semanticRelease()
             }
         }
     }
