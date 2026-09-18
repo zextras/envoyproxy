@@ -45,11 +45,6 @@ pipeline {
                     ubuntuSinglePkg: true,
                     overrides: [
                         'rocky-8': [
-                            // No buildUser override: v2 yap-rocky-8 container sudoers only
-                            // whitelist NOPASSWD for yap/tee/yum/dnf, so `useradd` and any
-                            // sudo -u <user> dnf/bazel invocation fail ("a password is
-                            // required"). Build as root like rocky-9/ubuntu — verified bazel
-                            // and dnf both run fine as root in this container.
                             buildFlags: '-d',
                             preBuildScript: 'dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
                         ]
