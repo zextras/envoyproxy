@@ -48,7 +48,11 @@ build__rocky_8() {
   python3 tools/github/write_current_source_version.py
   chmod +x ../bazelisk-linux-amd64
   source /opt/rh/gcc-toolset-11/enable
-  ../bazelisk-linux-amd64 build envoy
+  # Bazel reads the host core count, not the cgroup CPU quota, so it would
+  # otherwise start one compile per host core inside a 4-CPU/10Gi container
+  # and OOMKill it. Keep this in sync with the yap container cpu limit in
+  # infra-k3s (argocd-projects/dev-zextras/jenkins/jcasc/kubernetes-cloud.yaml).
+  ../bazelisk-linux-amd64 build --jobs=4 envoy
 }
 
 package__rocky_8() {
