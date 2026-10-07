@@ -1,6 +1,6 @@
 {
   "name": "yap-rocky-9",
-  "image": "m0rf30/yap-rocky-9:2.6",
+  "image": "m0rf30/yap-rocky-9:2.7",
   "customizations": {
     "vscode": {
       "settings": {
