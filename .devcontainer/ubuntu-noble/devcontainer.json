@@ -1,6 +1,6 @@
 {
   "name": "yap-ubuntu-noble",
-  "image": "m0rf30/yap-ubuntu-noble:2.6",
+  "image": "m0rf30/yap-ubuntu-noble:2.7",
   "customizations": {
     "vscode": {
       "settings": {
