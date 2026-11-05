@@ -7,7 +7,7 @@
 #   - https://www.consul.io/docs/connect/proxies/envoy
 
 pkgname="envoyproxy"
-pkgver="1.32.10" # renovate: datasource=github-releases depName=envoyproxy/envoy
+pkgver="1.40.2" # renovate: datasource=github-releases depName=envoyproxy/envoy
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -31,11 +31,11 @@ source__rocky_8=(
   "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
 sha256sums=(
-  'c2cce1c3fedeeab3e6cdc77aa2b89a5281d332abe299ddb71aeb29b6fc545f47'
+  '4fcda3d480acd6124c8a85487d79992b00f2e008cab25532ae28be764a92cdaa'
 )
 sha256sums__rocky_8=(
   'c50d662dcec8832eca56be673f5f9eef31d66a82d47762f46c7a7cd63edfa314'
-  '0338e6f2bb79f5efc84794b664b2218285f1e902fb640902ad676b22f1e1691b'
+  '5238e7c8accea26de78c89169945fd47478555852e4e1ae043ab7d13575ffa81'
 )
 
 package() {
