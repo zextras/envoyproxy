@@ -27,8 +27,10 @@ source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 # ncurses-compat-libs: libtinfo.so.5, needed by Envoy's hermetic LLVM 18 clang
+# glibc-devel: host headers for the luajit build tools (built without sysroot)
 makedepends__rocky_8=(
   "git"
+  "glibc-devel"
   "ncurses-compat-libs"
   "patch"
   'python39'
