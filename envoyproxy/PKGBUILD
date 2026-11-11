@@ -62,11 +62,59 @@ build__rocky_8() {
   sed -i 's/^envoy_dependencies_extra()$/envoy_dependencies_extra(glibc_version = "2.28")/' WORKSPACE
   grep -q '^envoy_dependencies_extra(glibc_version = "2.28")$' WORKSPACE
   chmod +x ../bazelisk-linux-amd64
+
+  # Only compile the extensions Consul can configure on a sidecar: drop
+  # protocol proxies, Lua, Wasm, dynamic modules, compression, extra
+  # tracers and cloud-specific filters. Extensions Consul generates
+  # (agent/xds) are kept, e.g. rbac, header_to_metadata, ext_authz,
+  # jwt_authn, tcp_proxy, sni_cluster, connection_limit, tls/http
+  # inspectors, original_dst, zipkin/opentelemetry, statsd sinks.
+  mkdir -p "${srcdir}/envoy_build_config"
+  touch "${srcdir}/envoy_build_config/WORKSPACE"
+  echo 'exports_files(["extensions_build_config.bzl"])' \
+    > "${srcdir}/envoy_build_config/BUILD"
+  python3 - source/extensions/extensions_build_config.bzl \
+    "${srcdir}/envoy_build_config/extensions_build_config.bzl" <<'EOF'
+import re, sys
+drop = re.compile(r'"envoy\.(' + '|'.join([
+    r'[a-z_.]*wasm[a-z_.]*', r'[a-z_.]*lua[a-z_.]*', r'[a-z_.]*dynamic_modules',
+    r'compression\.', r'filters\.http\.(compressor|decompressor|gzip)',
+    r'filters\.(dubbo|thrift)\.', r'generic_proxy\.',
+    r'filters\.network\.(dubbo_proxy|thrift_proxy|redis_proxy|mongo_proxy|zookeeper_proxy|generic_proxy|sni_dynamic_forward_proxy|echo)',
+    r'clusters\.redis', r'health_checkers\.(redis|thrift)',
+    r'tracers\.(datadog|skywalking|xray|fluentd)',
+    r'filters\.http\.(grpc_json_transcoder|grpc_json_reverse_transcoder|grpc_field_extraction|proto_message_extraction|geoip|oauth2|gcp_authn|aws_lambda|aws_request_signing|cache|file_system_buffer|ext_proc|rate_limit_quota|thrift_to_metadata)',
+    r'geoip_providers\.', r'http\.cache\.', r'http\.ext_proc\.', r'transport_sockets\.alts',
+    r'quic\.', r'udp_packet_writer\.gso',
+]) + r')[a-z0-9_.]*"\s*:')
+src, dst = sys.argv[1], sys.argv[2]
+kept = dropped = 0
+with open(src) as f, open(dst, "w") as out:
+    for line in f:
+        if drop.match(line.strip()):
+            dropped += 1
+            continue
+        kept += line.strip().startswith('"envoy.')
+        out.write(line)
+print(f"envoy extensions: kept {kept}, dropped {dropped}")
+if dropped < 50:
+    sys.exit("extension trimming matched too little: check the deny-list")
+EOF
+
   # Bazel reads the host core count, not the cgroup CPU quota, so it would
   # otherwise start one compile per host core inside a 4-CPU/10Gi container
   # and OOMKill it. Keep this in sync with the yap container cpu limit in
   # infra-k3s (argocd-projects/dev-zextras/jenkins/jcasc/kubernetes-cloud.yaml).
+  # ~/.ccache is a persistent hostPath on the CI yap agents: keep Bazel's
+  # action and download caches there so rebuilds only compile what changed.
+  local _cache="${HOME}/.ccache/bazel"
   ../bazelisk-linux-amd64 build --config=clang -c opt --jobs=4 \
+    --disk_cache="${_cache}/disk" \
+    --repository_cache="${_cache}/repo" \
+    --experimental_disk_cache_gc_max_size=20G \
+    --override_repository=envoy_build_config="${srcdir}/envoy_build_config" \
+    --define=wasm=disabled \
+    --@envoy//bazel:http3=False \
     //source/exe:envoy-static
 }
 
