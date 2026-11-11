@@ -54,7 +54,7 @@ pipeline {
                         'rocky-8': [
                             buildUser: 'yap',
                             buildFlags: '-d -s',
-                            preBuildScript: 'sudo dnf install -y git patch python39',
+                            preBuildScript: 'sudo dnf install -y git ncurses-compat-libs patch python39',
                         ]
                     ]
                 )

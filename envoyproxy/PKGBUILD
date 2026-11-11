@@ -26,8 +26,10 @@ conflicts=(
 source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
+# ncurses-compat-libs: libtinfo.so.5, needed by Envoy's hermetic LLVM 18 clang
 makedepends__rocky_8=(
   "git"
+  "ncurses-compat-libs"
   "patch"
   'python39'
 )
