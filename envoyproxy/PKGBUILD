@@ -77,7 +77,9 @@ build__rocky_8() {
     "${srcdir}/envoy_build_config/extensions_build_config.bzl" <<'EOF'
 import re, sys
 drop = re.compile(r'"envoy\.(' + '|'.join([
-    r'[a-z_.]*wasm[a-z_.]*', r'[a-z_.]*lua[a-z_.]*', r'[a-z_.]*dynamic_modules',
+    r'[a-z_.]*wasm[a-z_.]*', r'[a-z_.]*lua[a-z_.]*', r'[a-z_.]*dynamic_module[a-z_]*',
+    # Rust dynamic module, needs the dynamic_modules callbacks dropped above
+    r'network\.dns_resolver\.hickory',
     r'compression\.', r'filters\.http\.(compressor|decompressor|gzip)',
     r'filters\.(dubbo|thrift)\.', r'generic_proxy\.',
     r'filters\.network\.(dubbo_proxy|thrift_proxy|redis_proxy|mongo_proxy|zookeeper_proxy|generic_proxy|sni_dynamic_forward_proxy|echo)',
