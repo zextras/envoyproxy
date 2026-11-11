@@ -107,9 +107,11 @@ EOF
   # otherwise start one compile per host core inside a 4-CPU/10Gi container
   # and OOMKill it. Keep this in sync with the yap container cpu limit in
   # infra-k3s (argocd-projects/dev-zextras/jenkins/jcasc/kubernetes-cloud.yaml).
-  # ~/.ccache is a persistent hostPath on the CI yap agents: keep Bazel's
-  # action and download caches there so rebuilds only compile what changed.
-  _cache="${HOME}/.ccache/bazel"
+  # ~/.cache/bazel-ci is a persistent hostPath owned by the build user on
+  # the CI rocky-8 agents (infra-k3s jenkins/jcasc/kubernetes-cloud.yaml):
+  # keep Bazel's action and download caches there so rebuilds only compile
+  # what changed. Elsewhere it is a plain directory.
+  _cache="${HOME}/.cache/bazel-ci"
   ../bazelisk-linux-amd64 build --config=clang -c opt --jobs=4 \
     --disk_cache="${_cache}/disk" \
     --repository_cache="${_cache}/repo" \

@@ -54,9 +54,7 @@ pipeline {
                         'rocky-8': [
                             buildUser: 'yap',
                             buildFlags: '-d -s',
-                            // ~/.ccache is a root-owned persistent hostPath: give
-                            // the build user a Bazel cache dir inside it.
-                            preBuildScript: 'sudo dnf install -y git glibc-devel ncurses-compat-libs patch python39 && sudo mkdir -p /home/yap/.ccache/bazel && sudo chown -R yap: /home/yap/.ccache/bazel',
+                            preBuildScript: 'sudo dnf install -y git glibc-devel ncurses-compat-libs patch python39',
                         ]
                     ]
                 )
