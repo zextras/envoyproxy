@@ -109,7 +109,7 @@ EOF
   # infra-k3s (argocd-projects/dev-zextras/jenkins/jcasc/kubernetes-cloud.yaml).
   # ~/.ccache is a persistent hostPath on the CI yap agents: keep Bazel's
   # action and download caches there so rebuilds only compile what changed.
-  local _cache="${HOME}/.ccache/bazel"
+  _cache="${HOME}/.ccache/bazel"
   ../bazelisk-linux-amd64 build --config=clang -c opt --jobs=4 \
     --disk_cache="${_cache}/disk" \
     --repository_cache="${_cache}/repo" \
