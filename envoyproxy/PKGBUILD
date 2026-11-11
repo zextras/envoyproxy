@@ -28,6 +28,7 @@ source=(
 )
 makedepends__rocky_8=(
   "git"
+  "patch"
   'python39'
 )
 source__rocky_8=(
