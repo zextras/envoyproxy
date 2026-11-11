@@ -1,13 +1,16 @@
-# SPDX-FileCopyrightText: 2021-2025 Zextras <https://www.zextras.com>
+# SPDX-FileCopyrightText: 2021-2026 Zextras <https://www.zextras.com>
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-# Please refer to the table below to check envoy and consul
-# compatibility:
-#   - https://www.consul.io/docs/connect/proxies/envoy
+# Envoy must be in the range accepted by the shipped Consul
+# (service-discover-base), otherwise `consul connect envoy` refuses to start
+# the sidecars. See envoyextensions/xdscommon/ENVOY_VERSIONS in
+# hashicorp/consul and https://developer.hashicorp.com/consul/docs/connect/proxies/envoy
+# Consul 2.1.x accepts Envoy 1.36 - 1.39; Renovate is capped accordingly in
+# .github/renovate.json.
 
 pkgname="envoyproxy"
-pkgver="1.32.10" # renovate: datasource=github-releases depName=envoyproxy/envoy
+pkgver="1.39.6" # renovate: datasource=github-releases depName=envoyproxy/envoy
 pkgrel="1"
 pkgdesc="A high performance, open source, general RPC framework that puts mobile and HTTP/2 first."
 maintainer="Zextras SRL <packages@zextras.com>"
@@ -16,26 +19,27 @@ url="https://www.zextras.com"
 license=("Apache-2.0")
 section="utils"
 provides=("getenvoy-envoy")
-conflicts=("getenvoy-envoy")
+conflicts=(
+  "getenvoy-envoy"
+  "service-discover-base<2.1.0"
+)
 source=(
   "https://github.com/envoyproxy/envoy/releases/download/v${pkgver}/envoy-contrib-${pkgver}-linux-x86_64"
 )
 makedepends__rocky_8=(
-  'gcc-toolset-11-gcc'
-  'gcc-toolset-11-gcc-c++'
   "git"
   'python39'
 )
 source__rocky_8=(
-  "https://github.com/bazelbuild/bazelisk/releases/download/v1.24.0/bazelisk-linux-amd64"
+  "https://github.com/bazelbuild/bazelisk/releases/download/v1.30.0/bazelisk-linux-amd64"
   "https://github.com/envoyproxy/envoy/archive/refs/tags/v${pkgver}.tar.gz"
 )
 sha256sums=(
-  'c2cce1c3fedeeab3e6cdc77aa2b89a5281d332abe299ddb71aeb29b6fc545f47'
+  '97dde58e22a463727f1a61a3044a584930c0655553d9e12cf25dac350226e798'
 )
 sha256sums__rocky_8=(
-  'c50d662dcec8832eca56be673f5f9eef31d66a82d47762f46c7a7cd63edfa314'
-  '0338e6f2bb79f5efc84794b664b2218285f1e902fb640902ad676b22f1e1691b'
+  'a248ae2b2b62b5baebb748f6fba7203bff1a27e5d01b55399a8406744cb539e8'
+  'f938453f950137b811a7119a21a606c81c6a4b0ef222fbac084a941c24bb3495'
 )
 
 package() {
@@ -43,16 +47,22 @@ package() {
     "${pkgdir}/usr/bin/envoy"
 }
 
+# Upstream binaries need glibc >= 2.30 and el8 ships 2.28, so build from
+# source. Envoy builds with a hermetic Clang toolchain and sysroot whose
+# default glibc is 2.31: select the glibc 2.28 sysroot shipped by
+# envoy_toolshed, otherwise the binary would not run on el8.
 build__rocky_8() {
   cd "${srcdir}/envoy-${pkgver}"
   python3 tools/github/write_current_source_version.py
+  sed -i 's/^envoy_dependencies_extra()$/envoy_dependencies_extra(glibc_version = "2.28")/' WORKSPACE
+  grep -q '^envoy_dependencies_extra(glibc_version = "2.28")$' WORKSPACE
   chmod +x ../bazelisk-linux-amd64
-  source /opt/rh/gcc-toolset-11/enable
   # Bazel reads the host core count, not the cgroup CPU quota, so it would
   # otherwise start one compile per host core inside a 4-CPU/10Gi container
   # and OOMKill it. Keep this in sync with the yap container cpu limit in
   # infra-k3s (argocd-projects/dev-zextras/jenkins/jcasc/kubernetes-cloud.yaml).
-  ../bazelisk-linux-amd64 build --jobs=4 envoy
+  ../bazelisk-linux-amd64 build --config=clang -c opt --jobs=4 \
+    //source/exe:envoy-static
 }
 
 package__rocky_8() {

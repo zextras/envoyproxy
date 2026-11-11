@@ -54,7 +54,7 @@ pipeline {
                         'rocky-8': [
                             buildUser: 'yap',
                             buildFlags: '-d -s',
-                            preBuildScript: 'sudo dnf install -y gcc-toolset-11-gcc gcc-toolset-11-gcc-c++ git python39',
+                            preBuildScript: 'sudo dnf install -y git python39',
                         ]
                     ]
                 )
