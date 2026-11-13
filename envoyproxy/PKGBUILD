@@ -111,8 +111,12 @@ EOF
   # the CI rocky-8 agents (infra-k3s jenkins/jcasc/kubernetes-cloud.yaml):
   # keep Bazel's action and download caches there so rebuilds only compile
   # what changed. Elsewhere it is a plain directory.
+  # Only bazel-ci is a yap-owned mount: the runtime creates ~/.cache itself
+  # as root, so keep bazelisk's downloads and Bazel's output base out of it.
   _cache="${HOME}/.cache/bazel-ci"
-  ../bazelisk-linux-amd64 build --config=clang -c opt --jobs=4 \
+  export BAZELISK_HOME="${_cache}/bazelisk"
+  ../bazelisk-linux-amd64 --output_user_root="${srcdir}/bazel-root" \
+    build --config=clang -c opt --jobs=4 \
     --disk_cache="${_cache}/disk" \
     --repository_cache="${_cache}/repo" \
     --experimental_disk_cache_gc_max_size=20G \
